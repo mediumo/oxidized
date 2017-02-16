@@ -22,7 +22,9 @@ class TPLink < Oxidized::Model
     # normalize linefeeds
     cfg.gsub! /(\r|\r\n|\n\r)/,"\n"
     # remove empty lines
-    cfg.each_line.reject { |line| line.match /^[\r\n\s\u0000#]+$/ }.join
+    cfg = cfg.each_line.reject { |line| line.match /^[\r\n\s\u0000#]+$/ }.join
+    # remove constantly changing lines
+    cfg.each_line.reject { |line| line.match /(System|Running) Time\s+-/ }.join
   end
 
   cmd :secret do |cfg|
